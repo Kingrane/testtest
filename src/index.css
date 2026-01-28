@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+}
+
+@layer components {
+    .neo-card {
+        @apply bg-white border-neo border-black shadow-neo transition-all duration-200;
+    }
+
+    .neo-card:hover {
+        @apply shadow-neo-hover transform -translate-x-0.5 -translate-y-0.5;
+    }
+
+    .neo-button {
+        @apply bg-neo-yellow border-neo border-black shadow-neo font-display font-bold
+        px-6 py-3 transition-all duration-200 active:shadow-none active:translate-x-1 active:translate-y-1
+        hover:shadow-neo-hover hover:-translate-x-0.5 hover:-translate-y-0.5;
+    }
+
+    .neo-button-pink {
+        @apply bg-neo-pink border-neo border-black shadow-neo font-display font-bold
+        px-6 py-3 transition-all duration-200 active:shadow-none active:translate-x-1 active:translate-y-1
+        hover:shadow-neo-hover hover:-translate-x-0.5 hover:-translate-y-0.5;
+    }
+
+    .neo-button-blue {
+        @apply bg-neo-blue text-white border-neo border-black shadow-neo font-display font-bold
+        px-6 py-3 transition-all duration-200 active:shadow-none active:translate-x-1 active:translate-y-1
+        hover:shadow-neo-hover hover:-translate-x-0.5 hover:-translate-y-0.5;
+    }
+
+    .neo-input {
+        @apply border-neo border-black p-3 shadow-neo-sm outline-none focus:shadow-neo
+        transition-all duration-200;
+    }
+
+    .neo-badge {
+        @apply inline-block border-2 border-black px-3 py-1 text-sm font-bold shadow-neo-sm;
+    }
+}
+
+@keyframes spin-neo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin-neo {
+    animation: spin-neo 1s linear infinite;
+}
+
+@keyframes pulse-neo {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.animate-pulse-neo {
+    animation: pulse-neo 2s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-left: 3px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FFD600;
+    border: 3px solid black;
+    box-shadow: 2px 2px 0 black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #FF90E8;
+}
