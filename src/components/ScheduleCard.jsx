@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, User, Clock, Users, BookOpen } from 'lucide-react';
 
+
 const ScheduleCard = ({ lesson }) => {
     const getCardColor = () => {
         if (lesson.isLecture) return 'bg-neo-blue text-white';

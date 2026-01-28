@@ -1,16 +1,11 @@
 import React from 'react';
 import { MapPin, User, Clock, Users } from 'lucide-react';
 
-const ScheduleCardCompact = ({ lesson }) => {
+const ScheduleCardCompact = ({ lesson, pairNum }) => {
     const mainSubject = lesson.curricula[0];
-
-    // Получаем УНИКАЛЬНЫЕ кабинеты (чтобы не дублировать если совпадают)
     const uniqueRooms = [...new Set(lesson.curricula.map(c => c.roomname))];
-
-    // Получаем УНИКАЛЬНЫХ преподов (для случая когда 2 подгруппы - разные преподы)
     const uniqueTeachers = [...new Set(lesson.curricula.map(c => c.teachername).filter(Boolean))];
 
-    // Сокращаем имя
     const shortenName = (fullName) => {
         if (!fullName) return '';
         const parts = fullName.split(' ');
@@ -20,28 +15,29 @@ const ScheduleCardCompact = ({ lesson }) => {
         return fullName;
     };
 
-    // Цвет карточки по типу
-    const getCardBg = () => {
-        if (lesson.isLecture) return 'bg-neo-cold';
-        if (lesson.hasSubgroups) return 'bg-white';
-        if (lesson.type === 'upper') return 'bg-neo-yellow';
-        if (lesson.type === 'lower') return 'bg-neo-pink';
-        return 'bg-white';
+    const getCardClasses = () => {
+        const base = 'border-2 border-black shadow-neo-sm hover:shadow-neo transition-all duration-150 mb-2 rounded group cursor-pointer hover:-translate-x-0.5 hover:-translate-y-0.5 overflow-hidden';
+
+        /* if (lesson.isLecture) {
+            return `${base} bg-white`;
+        }
+        if (lesson.type === 'upper') return `${base} bg-neo-yellow`;
+        if (lesson.type === 'lower') return `${base} bg-neo-pink`;
+
+         */
+        return `${base} bg-white`;
     };
 
     return (
-        <div className={`${getCardBg()} border-2 border-black shadow-neo-sm hover:shadow-neo 
-                    transition-all duration-150 mb-2 rounded group cursor-pointer
-                    hover:-translate-x-0.5 hover:-translate-y-0.5 overflow-hidden`}>
-
-            {/* Верхняя полоса: время и аудиторИИ (все!) */}
+        <div className={getCardClasses()}>
             <div className="flex justify-between items-start border-b-2 border-black px-2 py-1 bg-gray-50">
-                <div className="flex items-center gap-1 font-display font-black text-sm pt-0.5">
-                    <Clock size={14} strokeWidth={3} />
+                <div className="flex items-center gap-1.5 font-display font-black text-sm pt-0.5">
+          <span className="bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center border border-black">
+            {pairNum}
+          </span>
                     <span>{lesson.start}-{lesson.end}</span>
                 </div>
 
-                {/* АУДИТОРИИ - все сразу */}
                 <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                     {uniqueRooms.length > 0 ? (
                         uniqueRooms.map((room, idx) => (
@@ -61,14 +57,11 @@ const ScheduleCardCompact = ({ lesson }) => {
                 </div>
             </div>
 
-            {/* Контент */}
             <div className="p-2">
-                {/* Название предмета */}
                 <h3 className="font-display font-black text-sm leading-tight mb-1 line-clamp-2">
                     {mainSubject?.subjectabbr || mainSubject?.subjectname}
                 </h3>
 
-                {/* Если подгрупп больше 1 - показываем "2 подгруппы" */}
                 {lesson.subcount > 1 && (
                     <div className="flex items-center gap-1 text-[10px] font-bold mb-1 bg-neo-green w-fit px-1.5 py-0.5 border border-black">
                         <Users size={10} strokeWidth={3} />
@@ -76,7 +69,6 @@ const ScheduleCardCompact = ({ lesson }) => {
                     </div>
                 )}
 
-                {/* Преподаватели: если один - сокращенно, если несколько - "2 преподавателя" */}
                 <div className="text-xs font-bold mb-1 space-y-0.5">
                     {uniqueTeachers.length === 1 ? (
                         <div className="flex items-center gap-1">
@@ -91,7 +83,6 @@ const ScheduleCardCompact = ({ lesson }) => {
                     ) : null}
                 </div>
 
-                {/* Детали по подгруппам (только если навести или если мало подгрупп) */}
                 {lesson.hasSubgroups && lesson.subcount <= 4 && (
                     <div className="mt-1.5 space-y-1 border-t border-black border-dashed pt-1.5">
                         {lesson.curricula.map((curr, idx) => (
@@ -110,7 +101,6 @@ const ScheduleCardCompact = ({ lesson }) => {
                     </div>
                 )}
 
-                {/* Бейджи типа занятия */}
                 <div className="flex gap-1 flex-wrap mt-1.5">
                     {lesson.isLecture && (
                         <span className="bg-black text-white text-[9px] font-black px-1.5 py-0.5 border border-black">
