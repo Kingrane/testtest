@@ -16,6 +16,7 @@ export default {
                 'neo-black': '#000000',
                 'neo-white': '#FFFFFF',
                 'neo-gray': '#F0F0F0',
+                'neo-cold': '#EDF2FB',
             },
             fontFamily: {
                 'sans': ['Inter', 'system-ui', 'sans-serif'],

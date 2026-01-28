@@ -9,7 +9,7 @@ const WeekToggle = ({ currentWeek, onChange }) => {
     ];
 
     return (
-        <div className="flex gap-2 p-1 bg-white border-3 border-black shadow-neo inline-flex rounded-lg">
+        <div className="flex gap-2 p-1 bg-white border-5 border-black shadow-neo inline-flex rounded-lg">
             {options.map((option) => {
                 const Icon = option.icon;
                 const isActive = currentWeek === option.value;

@@ -1,7 +1,9 @@
 import React from 'react';
 import ScheduleCard from './ScheduleCard';
+import ScheduleCardCompact from './ScheduleCardCompact';
+import { Coffee } from 'lucide-react';
 
-const DayColumn = ({ dayNumber, dayName, lessons }) => {
+const DayColumn = ({ dayNumber, dayName, lessons, compact = false }) => {
     const today = new Date().getDay();
     const adjustedToday = today === 0 ? 6 : today - 1;
     const isToday = adjustedToday === dayNumber;
@@ -13,29 +15,35 @@ const DayColumn = ({ dayNumber, dayName, lessons }) => {
             )}
 
             <div className="bg-white border-3 border-black shadow-neo h-full flex flex-col">
-                <div className={`p-4 border-b-3 border-black text-center ${
+                {/* Заголовок - компактнее */}
+                <div className={`p-2 border-b-3 border-black text-center sticky top-0 z-10 ${
                     isToday ? 'bg-neo-yellow' : 'bg-gray-100'
                 }`}>
-                    <h2 className="font-display font-bold text-2xl uppercase tracking-tight">
+                    <h2 className="font-display font-black tracking-tighter leading-none ${compact ? 'text-sm normal-case' : 'text-lg uppercase'}`">
                         {dayName}
                     </h2>
                     {isToday && (
-                        <div className="mt-1 inline-block bg-black text-white px-2 py-0.5 text-xs font-bold uppercase">
-                            Сегодня
+                        <div className="mt-0.5 inline-block bg-black text-white px-1.5 py-0 text-[10px] font-black uppercase">
+                            СЕГОДНЯ
                         </div>
                     )}
                 </div>
 
-                <div className="p-3 flex-1 overflow-y-auto">
+                {/* Список занятий */}
+                <div className="p-1.5 flex-1 overflow-y-auto space-y-1.5">
                     {lessons.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-32 text-center opacity-50">
-                            <div className="text-4xl mb-2">☕</div>
-                            <div className="font-bold text-sm">Нет занятий</div>
+                        <div className="flex flex-col items-center justify-center h-24 text-center opacity-40">
+                            <Coffee size={24} strokeWidth={3} />
+                            <div className="font-black text-xs mt-1">НЕТ</div>
                         </div>
                     ) : (
-                        lessons.map((lesson) => (
-                            <ScheduleCard key={lesson.id} lesson={lesson} />
-                        ))
+                        lessons.map((lesson) =>
+                            compact ? (
+                                <ScheduleCardCompact key={lesson.id} lesson={lesson} />
+                            ) : (
+                                <ScheduleCard key={lesson.id} lesson={lesson} />
+                            )
+                        )
                     )}
                 </div>
             </div>
