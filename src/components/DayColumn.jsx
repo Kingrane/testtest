@@ -22,64 +22,68 @@ const DayColumn = ({ dayNumber, dayName, lessons, compact = false }) => {
         return lessons.find(l => l.start === slotStart);
     };
 
-    return (
-        <div className={`h-full ${isToday ? 'relative' : ''}`}>
-            {isToday && (
-                <div className="absolute -inset-1 bg-neo-pink border-3 border-black shadow-neo -z-10 rotate-1"></div>
-            )}
+    const isDayOff = lessons.length === 0;
 
-            <div className="bg-white border-3 border-black shadow-neo h-full flex flex-col">
-                <div className={`p-2 border-b-3 border-black text-center sticky top-0 z-10 ${
-                    isToday ? 'bg-neo-yellow' : 'bg-gray-100'
-                }`}>
-                    <h2 className="font-display font-black tracking-tighter leading-none ${compact ? 'text-sm normal-case' : 'text-lg uppercase'}`">
+    return (
+        <div className="bg-white h-full flex flex-col border border-black">
+            {/* Header */}
+            <div className={`p-2.5 border-b border-black ${isToday ? 'bg-rose-100' : 'bg-gray-100'}`}>
+                <div className="flex items-baseline justify-between">
+                    <h2 className={`font-display font-black text-xs uppercase tracking-widest ${isToday ? 'text-rose-700' : 'text-gray-900'}`}>
                         {dayName}
                     </h2>
                     {isToday && (
-                        <div className="mt-0.5 inline-block bg-black text-white px-1.5 py-0 text-[10px] font-black uppercase">
-                            СЕГОДНЯ
-                        </div>
+                        <span className="font-comfortaa text-[9px] uppercase tracking-[0.2em] text-rose-600 font-bold">
+                            Сегодня
+                        </span>
                     )}
                 </div>
+            </div>
 
-                <div className="p-1.5 flex-1 overflow-y-auto space-y-1.5">
-                    {lessons.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-32 text-center opacity-40">
-                            <Coffee size={24} strokeWidth={3} />
-                            <div className="font-black text-xs mt-1">ВЫХОДНОЙ</div>
-                        </div>
-                    ) : (
-                        TIME_SLOTS.map((slot) => {
+            {/* Content */}
+            <div className="flex-1">
+                {isDayOff ? (
+                    <div className="h-full min-h-[300px] flex flex-col items-center justify-center bg-stone-100 pattern-diagonal">
+                        <Coffee size={24} className="text-stone-400 mb-2" strokeWidth={1.5} />
+                        <span className="font-display font-bold text-[9px] uppercase tracking-[0.25em] text-stone-500">
+                            Выходной
+                        </span>
+                    </div>
+                ) : (
+                    <div className="p-1 space-y-1">
+                        {TIME_SLOTS.map((slot) => {
                             const lesson = findLesson(slot.start);
 
                             if (lesson) {
-                                return compact ? (
-                                    <ScheduleCardCompact key={slot.num} lesson={lesson} pairNum={slot.num} />
-                                ) : (
-                                    <ScheduleCard key={slot.num} lesson={lesson} />
+                                return (
+                                    <div key={slot.num}>
+                                        {compact ? (
+                                            <ScheduleCardCompact lesson={lesson} pairNum={slot.num} timeSlot={slot} />
+                                        ) : (
+                                            <ScheduleCard lesson={lesson} pairNum={slot.num} timeSlot={slot} />
+                                        )}
+                                    </div>
                                 );
                             } else {
                                 return (
-                                    <div
-                                        key={slot.num}
-                                        className="bg-gray-100 border-2 border-dashed border-gray-300 rounded p-2
-                             flex justify-between items-center opacity-60 h-[60px]"
-                                    >
-                                        <div className="flex items-center gap-1.5 font-display font-bold text-gray-400 text-sm">
-                      <span className="bg-gray-300 text-gray-500 text-[10px] w-5 h-5 flex items-center justify-center border border-gray-400">
-                        {slot.num}
-                      </span>
-                                            <span>{slot.start}-{slot.end}</span>
+                                    <div key={slot.num} className={`p-2 card-premium flex items-center justify-between border-l-4 border-l-gray-300 ${compact ? 'min-h-[44px]' : 'min-h-[80px]'}`}>
+                                        <div className="flex items-center gap-2 opacity-40">
+                                            <span className="font-display font-bold text-lg text-gray-400">
+                                                {slot.num}
+                                            </span>
+                                            <span className="font-comfortaa text-xs text-gray-400">
+                                                {slot.start}–{slot.end}
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                      Окно
-                    </span>
+                                        <span className="font-comfortaa text-[10px] uppercase tracking-wider text-gray-400 opacity-60">
+                                            Окно
+                                        </span>
                                     </div>
                                 );
                             }
-                        })
-                    )}
-                </div>
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     );

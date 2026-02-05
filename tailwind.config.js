@@ -19,8 +19,9 @@ export default {
                 'neo-cold': '#EDF2FB',
             },
             fontFamily: {
-                'sans': ['Inter', 'system-ui', 'sans-serif'],
-                'display': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                'sans': ['Onest', 'system-ui', 'sans-serif'],
+                'display': ['Geologica', 'system-ui', 'sans-serif'],
+                'comfortaa': ['Comfortaa', 'cursive'],
             },
             boxShadow: {
                 'neo': '5px 5px 0px 0px rgba(0,0,0,1)',

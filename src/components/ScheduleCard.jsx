@@ -1,94 +1,117 @@
 import React from 'react';
-import { MapPin, User, Clock, Users, BookOpen } from 'lucide-react';
 
+const ScheduleCard = ({ lesson, pairNum, timeSlot }) => {
+    const mainSubject = lesson.curricula[0];
+    const uniqueRooms = [...new Set(lesson.curricula.map(c => c.roomname))];
+    const uniqueTeachers = [...new Set(lesson.curricula.map(c => c.teachername).filter(Boolean))];
 
-const ScheduleCard = ({ lesson }) => {
-    const getCardColor = () => {
-        if (lesson.isLecture) return 'bg-neo-blue text-white';
-        if (lesson.hasSubgroups) return 'bg-neo-green';
-        if (lesson.type === 'upper') return 'bg-neo-yellow';
-        if (lesson.type === 'lower') return 'bg-neo-pink';
-        return 'bg-white';
+    // Determine left border color based on lesson type
+    const getLeftBorder = () => {
+        if (lesson.isLecture) return 'border-l-4 border-rose-500';
+        if (lesson.type === 'upper') return 'border-l-4 border-orange-400';
+        if (lesson.type === 'lower') return 'border-l-4 border-blue-400';
+        return 'border-l-4 border-gray-300';
     };
 
-    const mainSubject = lesson.curricula[0];
+    // Determine badge color based on type
+    const getTypeBadge = () => {
+        if (lesson.type === 'upper') {
+            return { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-300', label: 'ВЕРХНЯЯ' };
+        }
+        if (lesson.type === 'lower') {
+            return { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-300', label: 'НИЖНЯЯ' };
+        }
+        return null;
+    };
+
+    const typeBadge = getTypeBadge();
 
     return (
-        <div className={`neo-card rounded-lg overflow-hidden mb-4 ${getCardColor()}`}>
-            <div className="border-b-3 border-black p-3 flex justify-between items-center bg-opacity-20 bg-black">
-                <div className="flex items-center gap-2 font-display font-bold text-lg">
-                    <Clock size={20} strokeWidth={3} />
-                    <span>{lesson.start} – {lesson.end}</span>
-                </div>
-                <div className="flex gap-2">
-                    {lesson.type !== 'full' && (
-                        <span className={`neo-badge text-xs ${
-                            lesson.type === 'upper' ? 'bg-neo-yellow' : 'bg-neo-pink'
-                        }`}>
-              {lesson.type === 'upper' ? 'Верхняя' : 'Нижняя'}
-            </span>
-                    )}
-                    {lesson.isLecture && (
-                        <span className="neo-badge bg-neo-orange text-white">
-              Лекция
-            </span>
-                    )}
-                </div>
+        <div className={`p-2.5 card-premium transition-all ${getLeftBorder()}`}>
+            {/* Header: Number, Time */}
+            <div className="flex items-center gap-2 mb-2">
+                {/* Pair Number */}
+                <span className="font-display font-black text-xl text-gray-300">
+                    {pairNum}
+                </span>
+                {/* Time */}
+                <span className="text-xs text-gray-500 font-comfortaa">
+                    {timeSlot.start}–{timeSlot.end}
+                </span>
             </div>
 
-            <div className="p-4">
-                <div className="mb-3">
-                    <h3 className="font-display font-bold text-xl mb-1 leading-tight">
-                        {mainSubject?.subjectabbr || mainSubject?.subjectname || 'Неизвестно'}
-                    </h3>
-                    <p className="text-sm opacity-80 font-medium">
-                        {mainSubject?.subjectname}
-                    </p>
-                </div>
+            {/* Subject */}
+            <h3 className="font-display font-bold text-base text-gray-900 mb-2 leading-snug">
+                {mainSubject?.subjectabbr || mainSubject?.subjectname}
+            </h3>
+            
+            {mainSubject?.subjectname && mainSubject.subjectname !== mainSubject.subjectabbr && (
+                <p className="text-xs text-gray-500 mb-2 font-onest">
+                    {mainSubject.subjectname}
+                </p>
+            )}
 
-                <div className="space-y-2 mb-3">
-                    {mainSubject?.teachername && (
-                        <div className="flex items-center gap-2 text-sm font-semibold">
-                            <User size={16} strokeWidth={2.5} />
-                            <span>{mainSubject.teachername}</span>
-                            {mainSubject.teacherdegree && (
-                                <span className="text-xs opacity-75">({mainSubject.teacherdegree})</span>
-                            )}
-                        </div>
+            {/* Room */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                {uniqueRooms.map((room, idx) => (
+                    <span
+                        key={idx}
+                        className="font-display font-bold text-xs px-2 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300"
+                    >
+                        {room}
+                    </span>
+                ))}
+            </div>
+
+            {/* Teacher - Full Name */}
+            {uniqueTeachers.length === 1 ? (
+                <div className="text-sm text-gray-700 font-onest mb-2">
+                    {uniqueTeachers[0]}
+                    {mainSubject?.teacherdegree && (
+                        <span className="text-xs text-gray-400 ml-1">({mainSubject.teacherdegree})</span>
                     )}
-
-                    {mainSubject?.roomname && (
-                        <div className="flex items-center gap-2 text-sm font-semibold">
-                            <MapPin size={16} strokeWidth={2.5} />
-                            <span>Ауд. {mainSubject.roomname}</span>
-                        </div>
-                    )}
                 </div>
+            ) : uniqueTeachers.length > 1 ? (
+                <div className="text-sm text-pink-700 font-onest font-semibold mb-2">
+                    {uniqueTeachers.length} преподавателя
+                </div>
+            ) : null}
 
-                {lesson.hasSubgroups && (
-                    <div className="mt-3 pt-3 border-t-2 border-black border-dashed">
-                        <div className="flex items-center gap-2 mb-2 font-bold text-sm">
-                            <Users size={16} strokeWidth={2.5} />
-                            <span>Подгруппы ({lesson.subcount}):</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2">
-                            {lesson.curricula.map((curr, idx) => (
-                                <div
-                                    key={idx}
-                                    className="bg-white bg-opacity-90 border-2 border-black p-2 rounded text-xs font-bold shadow-neo-sm"
-                                >
-                                    <div className="text-neo-pink">#{curr.subnum}</div>
-                                    <div className="truncate">{curr.roomname}</div>
-                                </div>
-                            ))}
-                        </div>
+            {/* Subgroups */}
+            {lesson.hasSubgroups && (
+                <div className="mb-2">
+                    <div className="text-[10px] text-gray-400 mb-1 font-comfortaa uppercase tracking-wider">
+                        Подгруппы ({lesson.subcount})
                     </div>
+                    <div className="grid grid-cols-2 gap-1.5">
+                        {lesson.curricula.map((curr, idx) => (
+                            <div key={idx} className="text-xs border border-gray-300 px-2 py-1 bg-gray-50">
+                                <span className="font-display font-bold text-gray-500">#{curr.subnum}</span>
+                                <span className="font-onest text-gray-700 ml-1">{curr.roomname}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Info */}
+            {lesson.info && (
+                <div className="mb-2 text-sm text-gray-600 font-onest">
+                    {lesson.info}
+                </div>
+            )}
+
+            {/* Type badges - at the bottom */}
+            <div className="flex gap-1 pt-2 border-t border-gray-200">
+                {lesson.isLecture && (
+                    <span className="font-comfortaa text-[9px] font-bold px-2 py-1 bg-pink-100 text-pink-800 border border-pink-300 uppercase tracking-wider">
+                        Лекция
+                    </span>
                 )}
-
-                {lesson.info && (
-                    <div className="mt-3 pt-2 border-t-2 border-black opacity-75 text-sm font-bold">
-                        ℹ️ {lesson.info}
-                    </div>
+                {typeBadge && (
+                    <span className={`font-comfortaa text-[9px] font-bold px-2 py-1 ${typeBadge.bg} ${typeBadge.text} border ${typeBadge.border} uppercase tracking-wider`}>
+                        {typeBadge.label}
+                    </span>
                 )}
             </div>
         </div>

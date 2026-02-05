@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {RefreshCw, AlertCircle, Github, LayoutGrid, List} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { RefreshCw, AlertCircle, Github, LayoutGrid, List } from 'lucide-react';
 import DayColumn from './components/DayColumn';
 import WeekToggle from './components/WeekToggle';
-import {mergeScheduleData, groupByDay, filterByWeek} from './utils/parser';
+import { mergeScheduleData, groupByDay, filterByWeek } from './utils/parser';
 
 const dayNames = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
@@ -12,7 +12,7 @@ function App() {
     const [error, setError] = useState(null);
     const [weekType, setWeekType] = useState('all');
     const [lastUpdate, setLastUpdate] = useState(null);
-    const [compactMode, setCompactMode] = useState(true); // По умолчанию компактно!
+    const [compactMode, setCompactMode] = useState(true);
 
     const fetchSchedule = async () => {
         try {
@@ -61,122 +61,120 @@ function App() {
     const grouped = groupByDay(filteredSchedule);
 
     return (
-        <div className="min-h-screen bg-neo-gray p-2 md:p-4">
-            <header className="max-w-[1600px] mx-auto mb-4">
-                <div className="bg-white border-3 border-black shadow-neo p-4 rounded-lg">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-
-                        {/* Левая часть */}
-                        <div>
-                            <h1 className="font-display font-black text-3xl md:text-4xl uppercase tracking-tight">
-                                РАСПИСАНИЕ <span className="text-neo-pink">ФИИТ4</span>
+        <div className="min-h-screen p-2 md:p-4 lg:p-6">
+            <div className="max-w-[1600px] mx-auto">
+                {/* Swiss Style Header */}
+                <header className="mb-4 border-b-2 border-gray-900 pb-4">
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+                        {/* Logo Section */}
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+                            <h1 className="font-display font-black text-3xl sm:text-5xl md:text-6xl uppercase tracking-tighter text-gray-900">
+                                Расписание
                             </h1>
-                            <p className="font-bold text-gray-600 text-sm mt-0.5">
-                                Мехмат • 1 курс
-                            </p>
+                            <div className="flex flex-col sm:-mt-1">
+                                <span className="font-display font-bold text-2xl sm:text-3xl text-rose-400">ФИИТ4</span>
+                                <span className="font-comfortaa text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider">Мехмат • 1 курс</span>
+                            </div>
                         </div>
 
-                        {/* Правая часть - контролы */}
-                        <div className="flex flex-wrap items-center gap-2">
-                            <WeekToggle currentWeek={weekType} onChange={setWeekType}/>
+                        {/* Controls */}
+                        <div className="flex flex-wrap items-center gap-3">
+                            <WeekToggle currentWeek={weekType} onChange={setWeekType} />
 
-                            {/* ПЕРЕКЛЮЧАТЕЛЬ ВИДА */}
-                            <div className="flex bg-gray-100 border-2 border-black rounded p-0.5">
+                            <div className="flex border border-gray-300">
                                 <button
                                     onClick={() => setCompactMode(true)}
-                                    className={`p-1.5 border-2 transition-all ${
-                                        compactMode
-                                            ? 'bg-neo-yellow border-black shadow-neo-sm'
-                                            : 'border-transparent hover:bg-white'
-                                    }`}
-                                    title="Компактный вид"
+                                    className={`p-2 transition-colors ${compactMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+                                    title="Компактный"
                                 >
-                                    <LayoutGrid size={18} strokeWidth={3}/>
+                                    <LayoutGrid size={18} strokeWidth={2} />
                                 </button>
                                 <button
                                     onClick={() => setCompactMode(false)}
-                                    className={`p-1.5 border-2 transition-all ${
-                                        !compactMode
-                                            ? 'bg-neo-yellow border-black shadow-neo-sm'
-                                            : 'border-transparent hover:bg-white'
-                                    }`}
-                                    title="Карточки"
+                                    className={`p-2 transition-colors ${!compactMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+                                    title="Подробный"
                                 >
-                                    <List size={18} strokeWidth={3}/>
+                                    <List size={18} strokeWidth={2} />
                                 </button>
                             </div>
 
                             <button
                                 onClick={fetchSchedule}
                                 disabled={loading}
-                                className="neo-button text-xs flex items-center gap-1.5 rounded py-2 px-3"
+                                className="px-4 py-2 bg-gray-900 text-white font-display font-semibold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors disabled:opacity-50"
                             >
-                                <RefreshCw size={14} className={loading ? 'animate-spin-neo' : ''} strokeWidth={3}/>
-                                <span className="hidden sm:inline">Обновить</span>
+                                <RefreshCw size={14} className={`inline mr-2 ${loading ? 'animate-spin' : ''}`} strokeWidth={2} />
+                                Обновить
                             </button>
 
                             {lastUpdate && (
-                                <div
-                                    className="text-[10px] font-bold text-gray-500 bg-white border-2 border-black px-2 py-1">
-                                    {lastUpdate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
-                                </div>
+                                <span className="font-comfortaa text-xs text-gray-400">
+                                    {lastUpdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
                             )}
                         </div>
                     </div>
-                </div>
-            </header>
+                </header>
 
-            {error && (
-                <div className="max-w-7xl mx-auto mb-6">
-                    <div
-                        className="bg-neo-orange text-white border-3 border-black shadow-neo p-4 rounded-lg flex items-center gap-3">
-                        <AlertCircle size={24} strokeWidth={3}/>
-                        <span className="font-bold">{error}</span>
+                {/* Error */}
+                {error && (
+                    <div className="mb-6 p-4 border-l-4 border-rose-400 bg-rose-50">
+                        <span className="font-onest text-rose-700 text-sm">{error}</span>
                     </div>
-                </div>
-            )}
+                )}
 
-            {loading && !schedule && (
-                <div className="max-w-7xl mx-auto">
+                {/* Loading */}
+                {loading && !schedule && (
                     <div className="flex justify-center items-center h-64">
-                        <div
-                            className="bg-neo-yellow border-3 border-black shadow-neo p-6 rounded-lg animate-pulse-neo">
-                            <RefreshCw size={32} className="animate-spin-neo" strokeWidth={3}/>
+                        <RefreshCw size={40} className="animate-spin text-gray-400" strokeWidth={1.5} />
+                    </div>
+                )}
+
+                {/* Schedule Grid - Mobile: vertical scroll, Desktop: horizontal */}
+                {schedule && (
+                    <main>
+                        {/* Mobile view: vertical stack */}
+                        <div className="block xl:hidden space-y-4">
+                            {dayNames.map((dayName, index) => (
+                                <DayColumn
+                                    key={index}
+                                    dayNumber={index}
+                                    dayName={dayName}
+                                    lessons={grouped[index] || []}
+                                    compact={compactMode}
+                                />
+                            ))}
                         </div>
-                    </div>
-                </div>
-            )}
+                        {/* Desktop view: 6 columns */}
+                        <div className="hidden xl:grid xl:grid-cols-6 gap-px bg-gray-300 border border-gray-300">
+                            {dayNames.map((dayName, index) => (
+                                <DayColumn
+                                    key={index}
+                                    dayNumber={index}
+                                    dayName={dayName}
+                                    lessons={grouped[index] || []}
+                                    compact={compactMode}
+                                />
+                            ))}
+                        </div>
+                    </main>
+                )}
 
-            {schedule && (
-                <main className="max-w-[1600px] mx-auto">
-                    {/* На мобильных - 1 колонка, планшет - 2, десктоп - 6 */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-                        {dayNames.map((dayName, index) => (
-                            <DayColumn
-                                key={index}
-                                dayNumber={index}
-                                dayName={dayName}
-                                lessons={grouped[index] || []}
-                                compact={compactMode}  // Передаем режим
-                            />
-                        ))}
+                {/* Footer */}
+                <footer className="mt-6 pt-3 border-t border-gray-200">
+                    <div className="flex justify-center items-center">
+                        <a
+                            href="https://github.com/Kingrane/testtest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="swiss-button-secondary flex items-center gap-2"
+                        >
+                            <Github size={18} strokeWidth={2} />
+                            <span className="font-comfortaa">GitHub</span>
+                        </a>
                     </div>
-                </main>
-            )}
-
-            <footer className="max-w-7xl mx-auto mt-12 mb-6">
-                <div className="flex justify-center items-center gap-4 opacity-60 hover:opacity-100 transition-opacity">
-                    <a
-                        href="https://github.com/Kingrane/testtest"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="neo-button-pink text-sm flex items-center gap-2 py-2 px-4"
-                    >
-                        <Github size={16} strokeWidth={3}/>
-                        GitHub
-                    </a>
-                </div>
-            </footer>
+                </footer>
+            </div>
         </div>
     );
 }
