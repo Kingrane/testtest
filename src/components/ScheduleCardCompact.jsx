@@ -17,9 +17,9 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
     // Determine left border color based on lesson type
     const getLeftBorder = () => {
         if (lesson.isLecture) return 'border-l-4 border-rose-500';
-        if (lesson.type === 'upper') return 'border-l-4 border-orange-400';
-        if (lesson.type === 'lower') return 'border-l-4 border-blue-400';
-        return 'border-l-4 border-gray-300';
+        if (lesson.type === 'upper') return 'border-l-4 border-orange-500';
+        if (lesson.type === 'lower') return 'border-l-4 border-blue-500';
+        return 'border-l-4 border-gray-400';
     };
 
     // Determine badge color based on type
@@ -41,11 +41,11 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
             <div className="flex justify-between items-center mb-1.5">
                 <div className="flex items-center gap-2">
                     {/* Pair Number */}
-                    <span className="font-display font-black text-xl text-gray-300">
+                    <span className="font-display font-black text-xl text-gray-600">
                         {pairNum}
                     </span>
                     {/* Time */}
-                    <span className="text-xs text-gray-500 font-comfortaa">
+                    <span className="text-xs text-gray-600 font-comfortaa">
                         {timeSlot.start}–{timeSlot.end}
                     </span>
                 </div>
@@ -53,7 +53,7 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
                 {/* Type badges */}
                 <div className="flex gap-1">
                     {lesson.isLecture && (
-                        <span className="font-comfortaa text-[9px] font-bold px-1.5 py-0.5 bg-pink-100 text-pink-800 border border-pink-300 uppercase tracking-wider">
+                        <span className="font-comfortaa text-[9px] font-bold px-1.5 py-0.5 bg-pink-100 text-pink-900 border border-pink-300 uppercase tracking-wider">
                             Лекция
                         </span>
                     )}
@@ -75,18 +75,18 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
                 {uniqueRooms.map((room, idx) => (
                     <span
                         key={idx}
-                        className="font-display font-bold text-xs px-1.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300"
+                        className="font-display font-bold text-xs px-1.5 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-300"
                     >
                         {room}
                     </span>
                 ))}
                 
                 {uniqueTeachers.length === 1 ? (
-                    <span className="text-xs text-gray-600 font-onest truncate">
+                    <span className="text-xs text-gray-700 font-onest truncate">
                         {shortenName(uniqueTeachers[0])}
                     </span>
                 ) : uniqueTeachers.length > 1 ? (
-                    <span className="text-xs text-pink-700 font-onest font-semibold">
+                    <span className="text-xs text-pink-800 font-onest font-semibold">
                         {uniqueTeachers.length} преп.
                     </span>
                 ) : null}
@@ -97,8 +97,8 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
                 <div className="mt-2 pt-2 border-t border-gray-200">
                     <div className="flex flex-wrap gap-1.5">
                         {lesson.curricula.map((curr, idx) => (
-                            <div key={idx} className="flex items-center gap-1 text-[10px] border border-gray-300 px-1.5 py-0.5 bg-gray-50">
-                                <span className="font-display font-bold text-gray-500">#{curr.subnum}</span>
+                            <div key={idx} className="flex items-center gap-1 text-[10px] border border-gray-300 px-1.5 py-0.5 bg-gray-100">
+                                <span className="font-display font-bold text-gray-600">#{curr.subnum}</span>
                                 <span className="font-onest text-gray-700">{curr.roomname}</span>
                             </div>
                         ))}
@@ -109,7 +109,7 @@ const ScheduleCardCompact = ({ lesson, pairNum, timeSlot }) => {
             {/* Subgroups count for many subgroups */}
             {lesson.subcount > 2 && (
                 <div className="mt-2">
-                    <span className="font-comfortaa text-[10px] font-bold px-1.5 py-0.5 bg-violet-100 text-violet-800 border border-violet-300">
+                    <span className="font-comfortaa text-[10px] font-bold px-1.5 py-0.5 bg-violet-100 text-violet-900 border border-violet-300">
                         {lesson.subcount} подгр.
                     </span>
                 </div>

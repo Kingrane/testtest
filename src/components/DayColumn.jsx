@@ -33,7 +33,7 @@ const DayColumn = ({ dayNumber, dayName, lessons, compact = false }) => {
                         {dayName}
                     </h2>
                     {isToday && (
-                        <span className="font-comfortaa text-[9px] uppercase tracking-[0.2em] text-rose-600 font-bold">
+                        <span className="font-comfortaa text-[9px] uppercase tracking-[0.2em] text-rose-700 font-bold">
                             Сегодня
                         </span>
                     )}
@@ -44,8 +44,8 @@ const DayColumn = ({ dayNumber, dayName, lessons, compact = false }) => {
             <div className="flex-1">
                 {isDayOff ? (
                     <div className="h-full min-h-[300px] flex flex-col items-center justify-center bg-stone-100 pattern-diagonal">
-                        <Coffee size={24} className="text-stone-400 mb-2" strokeWidth={1.5} />
-                        <span className="font-display font-bold text-[9px] uppercase tracking-[0.25em] text-stone-500">
+                        <Coffee size={24} className="text-stone-500 mb-2" strokeWidth={1.5} />
+                        <span className="font-display font-bold text-[9px] uppercase tracking-[0.25em] text-stone-600">
                             Выходной
                         </span>
                     </div>
@@ -66,16 +66,16 @@ const DayColumn = ({ dayNumber, dayName, lessons, compact = false }) => {
                                 );
                             } else {
                                 return (
-                                    <div key={slot.num} className={`p-2 card-premium flex items-center justify-between border-l-4 border-l-gray-300 ${compact ? 'min-h-[44px]' : 'min-h-[80px]'}`}>
-                                        <div className="flex items-center gap-2 opacity-40">
-                                            <span className="font-display font-bold text-lg text-gray-400">
+                                    <div key={slot.num} className={`p-2 card-premium flex items-center justify-between border-l-4 border-l-gray-400 ${compact ? 'min-h-[44px]' : 'min-h-[80px]'}`}>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-display font-bold text-lg text-gray-500">
                                                 {slot.num}
                                             </span>
-                                            <span className="font-comfortaa text-xs text-gray-400">
+                                            <span className="font-comfortaa text-xs text-gray-500">
                                                 {slot.start}–{slot.end}
                                             </span>
                                         </div>
-                                        <span className="font-comfortaa text-[10px] uppercase tracking-wider text-gray-400 opacity-60">
+                                        <span className="font-comfortaa text-[10px] uppercase tracking-wider text-gray-500">
                                             Окно
                                         </span>
                                     </div>

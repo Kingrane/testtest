@@ -72,8 +72,8 @@ function App() {
                                 Расписание
                             </h1>
                             <div className="flex flex-col sm:-mt-1">
-                                <span className="font-display font-bold text-2xl sm:text-3xl text-rose-400">ФИИТ4</span>
-                                <span className="font-comfortaa text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider">Мехмат • 1 курс</span>
+                                <span className="font-display font-bold text-2xl sm:text-3xl text-rose-500">ФИИТ4</span>
+                                <span className="font-comfortaa text-[10px] sm:text-xs text-gray-600 uppercase tracking-wider">Мехмат • 1 курс</span>
                             </div>
                         </div>
 
